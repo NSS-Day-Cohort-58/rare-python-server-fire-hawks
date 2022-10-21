@@ -18,6 +18,7 @@ def get_all_posts():
             p.id,
             p.user_id,
             p.category_id,
+            p.title,
             p.publication_date,
             p.image_url,
             p.content,
@@ -56,6 +57,7 @@ def get_single_post(id):
             p.id,
             p.user_id,
             p.category_id,
+            p.title,
             p.publication_date,
             p.image_url,
             p.content,
@@ -68,7 +70,7 @@ def get_single_post(id):
         data = db_cursor.fetchone()
 
         # Create an animal instance from the current row
-        post = Post(data['id'], data['user_id'], data['category_id'],
+        post = Post(data['id'], data['user_id'], data['category_id'], data['title'],
                     data['publication_date'], data['image_url'], data['content'], data['approved'])
 
         return json.dumps(post.__dict__)

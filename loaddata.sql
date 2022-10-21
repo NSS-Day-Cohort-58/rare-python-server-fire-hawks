@@ -138,6 +138,7 @@ SELECT
     p.id,
     p.user_id,
     p.category_id,
+    p.title,
     p.publication_date,
     p.image_url,
     p.content,

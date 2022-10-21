@@ -1,13 +1,21 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
+from views.post_requests import get_all_posts
 
 from views.user import create_user, login_user
+
+method_mapper = {
+    "posts": {
+        "single": "",
+        "all": get_all_posts
+    }
+}
 
 
 class HandleRequests(BaseHTTPRequestHandler):
     """Handles the requests to this server"""
 
-    def parse_url(self):
+    def parse_url(self, path):
         """Parse the url into the resource and id"""
         path_params = self.path.split('/')
         resource = path_params[1]
@@ -49,10 +57,40 @@ class HandleRequests(BaseHTTPRequestHandler):
                          'X-Requested-With, Content-Type, Accept')
         self.end_headers()
 
-    def do_GET(self):
-        """Handle Get requests to the server"""
-        pass
+    def get_all_or_single(self, resource, id):
+        if id is not None:
+            response = method_mapper[resource]["single"](id)
 
+            if response is not None:
+                self._set_headers(200)
+            else:
+                self._set_headers(404)
+                response = ''
+        else:
+            self._set_headers(200)
+            response = method_mapper[resource]["all"]()
+
+        return response
+
+    def do_GET(self):
+        self._set_headers(200)
+
+        response = {}
+        parsed = self.parse_url(self.path)
+
+    # Parse URL and store entire tuple in a variable
+
+        # If the path does not include a query parameter, continue with the original if block
+        if '?' not in self.path:
+            (resource, id) = parsed
+
+            if resource == "posts":
+                if id is not None:
+                    response = "Future update"
+                else:
+                    response = get_all_posts()
+
+        self.wfile.write(response.encode())
 
     def do_POST(self):
         """Make a post request to the server"""
@@ -60,7 +98,7 @@ class HandleRequests(BaseHTTPRequestHandler):
         content_len = int(self.headers.get('content-length', 0))
         post_body = json.loads(self.rfile.read(content_len))
         response = ''
-        resource, _ = self.parse_url()
+        resource, _ = self.parse_url(self.path)
 
         if resource == 'login':
             response = login_user(post_body)

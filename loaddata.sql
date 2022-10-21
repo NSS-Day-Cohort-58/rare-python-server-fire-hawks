@@ -199,3 +199,17 @@ SELECT
     u.active
 FROM Users u
 WHERE u.id = 2
+
+SELECT
+    p.id,
+    p.user_id,
+    p.category_id,
+    p.title,
+    p.publication_date,
+    p.image_url,
+    p.content,
+    p.approved,
+    c.label categorie_label
+FROM Posts p
+JOIN Categories c
+    ON c.id = p.category_id

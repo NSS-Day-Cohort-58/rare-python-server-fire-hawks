@@ -10,7 +10,7 @@ CREATE TABLE "Users" (
   "created_on" date,
   "active" bit
 );
-<<<<<<< HEAD
+
 
 CREATE TABLE "DemotionQueue" (
   "action" varchar,
@@ -20,9 +20,6 @@ CREATE TABLE "DemotionQueue" (
   FOREIGN KEY(`approver_one_id`) REFERENCES `Users`(`id`),
   PRIMARY KEY (action, admin_id, approver_one_id)
 );
-
-=======
->>>>>>> main
 
 CREATE TABLE "Subscriptions" (
   "id" INTEGER PRIMARY KEY AUTOINCREMENT,

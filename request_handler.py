@@ -73,7 +73,6 @@ class HandleRequests(BaseHTTPRequestHandler):
         return response
 
     def do_GET(self):
-        self._set_headers(200)
 
         response = {}
         parsed = self.parse_url(self.path)

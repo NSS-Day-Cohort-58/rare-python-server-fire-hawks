@@ -85,22 +85,49 @@ CREATE TABLE "Categories" (
   "label" varchar
 );
 
+
+INSERT INTO Categories ('label') VALUES ('Nature');
+INSERT INTO Categories ('label') VALUES ('Coding');
+INSERT INTO Categories ('label') VALUES ('Sports');
 INSERT INTO Categories ('label') VALUES ('Lord Godzilla');
+
 INSERT INTO Tags ('label') VALUES ('PYTHON');
+INSERT INTO Tags ('label') VALUES ('JavaScript');
+INSERT INTO Tags ('label') VALUES ('CSS');
+INSERT INTO Tags ('label') VALUES ('HTML');
+INSERT INTO Tags ('label') VALUES ('Unknown');
 
-
+INSERT INTO Reactions ('label', 'image_url') VALUES ('happy', 'https://pngtree.com/so/happy');
+INSERT INTO Reactions ('label', 'image_url') VALUES ('sad', 'https://pngtree.com/so/sad');
 INSERT INTO Reactions ('label', 'image_url') VALUES ('indiff', 'https://pngtree.com/so/indifferent');
 
+INSERT INTO Comments VALUES (Null, 1, 1, 'LizardButthole');
+INSERT INTO Comments VALUES (Null, 2, 1, 'CatButthole');
+INSERT INTO Comments VALUES (Null, 1, 2, 'DogButthole');
+INSERT INTO Comments VALUES (Null, 2, 2, 'GodButthole');
 
-INSERT INTO Comments VALUES (Null, 2, 2, 'LizardButthole')
+INSERT INTO PostReactions VALUES (Null, 1, 1, 1);
+INSERT INTO PostReactions VALUES (Null, 1, 1, 2);
+INSERT INTO PostReactions VALUES (Null, 2, 2, 1);
+INSERT INTO PostReactions VALUES (Null, 2, 2, 2);
 
-INSERT INTO PostReactions VALUES (Null, 2, 2, 2)
-INSERT INTO PostTags VALUES (Null, 1, 2 )
+INSERT INTO PostTags VALUES (Null, 1, 1 );
+INSERT INTO PostTags VALUES (Null, 1, 2 );
+INSERT INTO PostTags VALUES (Null, 2, 1 );
+INSERT INTO PostTags VALUES (Null, 2, 2 );
 
-INSERT INTO Posts VALUES (Null, 1, 2, 'NoneButthole', CURRENT_TIMESTAMP, 'NoneButtholePic.img', 'Twerk', True)
+INSERT INTO Posts VALUES (Null, 1, 1, 'CatButthole', CURRENT_TIMESTAMP, 'CatButtholePic.img', 'Meow', True);
+INSERT INTO Posts VALUES (Null, 1, 2, 'DogButthole', CURRENT_TIMESTAMP, 'DogButtholePic.img', 'Bark', True);
+INSERT INTO Posts VALUES (Null, 2, 1, 'GodButthole', CURRENT_TIMESTAMP, 'GodButtholePic.img', 'Thunder', False);
+INSERT INTO Posts VALUES (Null, 2, 2, 'NoneButthole', CURRENT_TIMESTAMP, 'NoneButtholePic.img', 'Twerk', True);
 
-INSERT INTO Subscriptions VALUES (Null, 1, 2, CURRENT_TIMESTAMP)
+INSERT INTO Subscriptions VALUES (Null, 1, 1, CURRENT_TIMESTAMP);
+INSERT INTO Subscriptions VALUES (Null, 1, 2, CURRENT_TIMESTAMP);
+INSERT INTO Subscriptions VALUES (Null, 2, 2, CURRENT_TIMESTAMP);
+INSERT INTO Subscriptions VALUES (Null, 2, 1, CURRENT_TIMESTAMP);
 
+INSERT INTO Users VALUES (NULL, 'matt', 'Martino', 'matt@email.com', 'Happenin Dude', 'MattCat', 'butthole', 'MattCat.img', CURRENT_TIMESTAMP, True);
+INSERT INTO Users VALUES (NULL, 'Kelly', 'franidonno', 'kelly@email.com', 'Happenin lady', 'KellyCat', 'butthole', 'KellyCat.img', CURRENT_TIMESTAMP, True);
+INSERT INTO Users VALUES (NULL, 'Nick', 'ClastName', 'Nick@email.com', 'Happenin Dude', 'NickCat', 'butthole', 'NickCat.img', CURRENT_TIMESTAMP, True);
+INSERT INTO Users VALUES (NULL, 'Scott', 'Parks', 'Scott@email.com', 'Happenin Dude', 'ScottCat', 'butthole', 'scottCat.img', CURRENT_TIMESTAMP, True);
 
-INSERT INTO Users VALUES (NULL, 'matt', 'Martino', 'matt@email.com', 'Happenin Dude', 'MattCat', 'butthole', 'MattCat.img', CURRENT_TIMESTAMP, True)
-INSERT INTO Users VALUES (NULL, 'Kelly', 'franidonno', 'kelly@email.com', 'Happenin lady', 'KellyCat', 'butthole', 'KellyCat.img', CURRENT_TIMESTAMP, True)

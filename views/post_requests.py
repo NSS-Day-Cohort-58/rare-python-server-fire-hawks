@@ -1,6 +1,6 @@
 import sqlite3
 import json
-
+from models import Category
 from models.post import Post
 
 
@@ -23,7 +23,9 @@ def get_all_posts():
             p.image_url,
             p.content,
             p.approved
+            
         FROM Posts p
+        
        
         """)
 
@@ -39,6 +41,10 @@ def get_all_posts():
         # Create an animal instance from the current row
         post = Post(row['id'], row['user_id'], row['category_id'], row['title'],
                     row['publication_date'], row['image_url'], row['content'], row['approved'])
+        # category = Category(row['id'], row['label'])
+
+        # # Add the dictionary representation of the location to the animal
+        # post.category = category.__dict__
 
         posts.append(post.__dict__)
 

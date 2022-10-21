@@ -1,8 +1,7 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
-
 from views.user import create_user, login_user
-
+from views import get_all_categorys
 
 class HandleRequests(BaseHTTPRequestHandler):
     """Handles the requests to this server"""

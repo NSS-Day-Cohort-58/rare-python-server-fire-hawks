@@ -30,15 +30,13 @@ def get_all_categorys():
 
             categorys.append(category.__dict__)
 
-    return categorys
+    return json.dumps(categorys)
 
 def get_single_category(id):
     with sqlite3.connect("./db.sqlite3") as conn:
         conn.row_factory = sqlite3.Row
         db_cursor = conn.cursor()
 
-        # Use a ? parameter to inject a variable's value
-        # into the SQL statement.
         db_cursor.execute("""
         SELECT
             c.id,
@@ -47,10 +45,24 @@ def get_single_category(id):
         WHERE c.id = ?
         """, ( id, ))
 
-        # Load the single result into memory
         data = db_cursor.fetchone()
 
-        # Create an category instance from the current row
         category = Category(data['id'], data['label'])
 
-        return category.__dict__
+        return json.dumps(category.__dict__)
+
+def create_category(new_category):
+    with sqlite3.connect("./db.sqlite3") as conn:
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        INSERT INTO Categories
+            ( label )
+        VALUES
+            ( ? );
+        """, (new_category['label'], ))
+
+        id = db_cursor.lastrowid
+
+        new_category['id'] = id
+    return new_category

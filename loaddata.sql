@@ -155,3 +155,4 @@ SELECT
     p.approved
 FROM Posts p
 
+INSERT INTO Categories ('label') VALUES ('Nature');

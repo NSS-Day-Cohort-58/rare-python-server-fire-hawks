@@ -1,16 +1,16 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
-from views.category_requests import get_all_categorys, get_single_category
+from views.category_requests import get_all_categorys, get_single_category, create_category
 from views.post_requests import get_all_posts, get_single_post
+from views.user_request import create_user, login_user
 
-from views.user import create_user, login_user
 
 method_mapper = {
     "posts": {
         "single": get_single_post,
         "all": get_all_posts
     },
-    "categorys": {
+    "categories": {
         "single": get_single_category,
         "all": get_all_categorys
     }
@@ -94,9 +94,10 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = get_single_post(id)
                 else:
                     response = get_all_posts()
-            if resource == "categorys":
+
+            if resource == "categories":
                 if id is not None:
-                    response = get_single_category
+                    response = get_single_category(id)
                 else:
                     response = get_all_categorys()
 
@@ -114,6 +115,8 @@ class HandleRequests(BaseHTTPRequestHandler):
             response = login_user(post_body)
         if resource == 'register':
             response = create_user(post_body)
+        if resource == 'categories':
+            response = create_category(post_body)
 
         self.wfile.write(response.encode())
 

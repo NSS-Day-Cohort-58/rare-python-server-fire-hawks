@@ -3,7 +3,7 @@ import json
 from views.category_requests import get_all_categorys, get_single_category, create_category
 
 from views.comments_requests import create_comment, get_all_comments, get_single_comment
-from views.post_requests import delete_post, get_all_posts, get_single_post
+from views.post_requests import create_post, delete_post, get_all_posts, get_single_post
 
 from views.post_requests import delete_post, get_all_posts, get_single_post
 from views.tag_requests import create_tag, get_all_tags, get_single_tag
@@ -152,15 +152,14 @@ class HandleRequests(BaseHTTPRequestHandler):
             response = create_user(post_body)
         if resource == 'categories':
             response = create_category(post_body)
-
         if resource == 'comments':
             response = create_comment(post_body)
-
-
         if resource == 'tag':
             response = create_tag(post_body)
         if resource == 'users':
             response = create_user(post_body)
+        if resource == 'posts':
+            response = create_post(post_body)
 
         self.wfile.write(response.encode())
 

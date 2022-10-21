@@ -10,7 +10,7 @@ CREATE TABLE "Users" (
   "created_on" date,
   "active" bit
 );
-<<<<<<< HEAD
+
 
 CREATE TABLE "DemotionQueue" (
   "action" varchar,
@@ -149,6 +149,7 @@ SELECT
     p.id,
     p.user_id,
     p.category_id,
+    p.title,
     p.publication_date,
     p.image_url,
     p.content,

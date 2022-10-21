@@ -2,9 +2,9 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 
 from views.category_requests import get_all_categorys, get_single_category, create_category
-from views.post_requests import get_all_posts, get_single_post
+from views.comments_requests import create_comment, get_all_comments, get_single_comment
+from views.post_requests import delete_post, get_all_posts, get_single_post
 from views.user_requests import create_user, get_all_users, get_single_user, login_user
-
 
 
 method_mapper = {
@@ -103,6 +103,11 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = get_single_user(id)
                 else:
                     response = get_all_users()
+            if resource == "comments":
+                if id is not None:
+                    response = get_single_comment(id)
+                else:
+                    response = get_all_comments()
 
         self.wfile.write(response.encode())
 
@@ -120,6 +125,8 @@ class HandleRequests(BaseHTTPRequestHandler):
             response = create_user(post_body)
         if resource == 'categories':
             response = create_category(post_body)
+        if resource == 'comments':
+            response = create_comment(post_body)
 
         self.wfile.write(response.encode())
 
@@ -134,7 +141,7 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if resource == "posts":
             delete_post(id)
-        
+
         self.wfile.write("".encode())
 
 

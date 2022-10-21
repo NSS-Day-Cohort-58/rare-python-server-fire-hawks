@@ -10,16 +10,6 @@ CREATE TABLE "Users" (
   "created_on" date,
   "active" bit
 );
-DROP TABLE "DemotionQueue"
-CREATE TABLE "DemotionQueue" (
-  "action" varchar,
-  "admin_id" INTEGER,
-  "approver_one_id" INTEGER,
-  FOREIGN KEY(`admin_id`) REFERENCES `Users`(`id`),
-  FOREIGN KEY(`approver_one_id`) REFERENCES `Users`(`id`),
-  PRIMARY KEY (action, admin_id, approver_one_id)
-);
-
 
 CREATE TABLE "Subscriptions" (
   "id" INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -131,3 +121,12 @@ INSERT INTO Users VALUES (NULL, 'Kelly', 'franidonno', 'kelly@email.com', 'Happe
 INSERT INTO Users VALUES (NULL, 'Nick', 'ClastName', 'Nick@email.com', 'Happenin Dude', 'NickCat', 'butthole', 'NickCat.img', CURRENT_TIMESTAMP, True);
 INSERT INTO Users VALUES (NULL, 'Scott', 'Parks', 'Scott@email.com', 'Happenin Dude', 'ScottCat', 'butthole', 'scottCat.img', CURRENT_TIMESTAMP, True);
 
+SELECT
+    p.id,
+    p.user_id,
+    p.category_id,
+    p.publication_date,
+    p.image_url,
+    p.content,
+    p.approved
+FROM Posts p

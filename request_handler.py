@@ -138,8 +138,14 @@ class HandleRequests(BaseHTTPRequestHandler):
         pass
 
     def do_DELETE(self):
-        """Handle DELETE Requests"""
-        pass
+        self._set_headers(204)
+
+        (resource, id) = self.parse_url(self.path)
+
+        if resource == "posts":
+            delete_post(id)
+        
+        self.wfile.write("".encode())
 
 
 def main():

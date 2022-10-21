@@ -2,7 +2,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 from views.post_requests import get_all_posts, get_single_post, delete_post
 
-from views.user_request import create_user, login_user
+from views.user_requests import create_user, login_user
 
 method_mapper = {
     "posts": {

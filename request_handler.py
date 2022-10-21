@@ -1,9 +1,13 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
-
 from views.category_requests import get_all_categorys, get_single_category, create_category
+
 from views.comments_requests import create_comment, get_all_comments, get_single_comment
 from views.post_requests import delete_post, get_all_posts, get_single_post
+
+from views.post_requests import delete_post, get_all_posts, get_single_post
+from views.tag_requests import create_tag, get_all_tags, get_single_tag
+
 from views.user_requests import create_user, get_all_users, get_single_user, login_user
 
 
@@ -11,7 +15,18 @@ method_mapper = {
     "posts": {
         "single": get_single_post,
         "all": get_all_posts
-
+    },
+    "categories": {
+        "single": get_single_category,
+        "all": get_all_categorys
+    },
+    "tags": {
+        "single": get_single_tag,
+        "all": get_all_tags
+    },
+    "users": {
+        "single": get_single_user,
+        "all": get_all_users
     }
 }
 
@@ -109,6 +124,18 @@ class HandleRequests(BaseHTTPRequestHandler):
                 else:
                     response = get_all_comments()
 
+            if resource == "tags":
+                if id is not None:
+                    response = get_single_tag(id)
+                else:
+                    response = get_all_tags()
+
+            if resource == "users":
+                if id is not None:
+                    response = get_single_user(id)
+                else:
+                    response = get_all_users()
+
         self.wfile.write(response.encode())
 
     def do_POST(self):
@@ -125,8 +152,15 @@ class HandleRequests(BaseHTTPRequestHandler):
             response = create_user(post_body)
         if resource == 'categories':
             response = create_category(post_body)
+
         if resource == 'comments':
             response = create_comment(post_body)
+
+
+        if resource == 'tag':
+            response = create_tag(post_body)
+        if resource == 'users':
+            response = create_user(post_body)
 
         self.wfile.write(response.encode())
 

@@ -41,10 +41,12 @@ def get_all_users():
                 row["bio"],
                 row["profile_image_url"],
                 row["created_on"],
-                row["active"],
+                row["active"]
+
             )
             users.append(user.__dict__)
     return json.dumps(users)
+
 
 def get_single_user(id):
     with sqlite3.connect("./db.sqlite3") as conn:
@@ -88,7 +90,9 @@ def get_single_user(id):
             data["created_on"],
             data["active"]
         )
-        return json.dumps(user.__dict__)
+        return json.dumps(user.__dict__
+                          )
+
 
 def login_user(user):
     """Checks for the user in the database

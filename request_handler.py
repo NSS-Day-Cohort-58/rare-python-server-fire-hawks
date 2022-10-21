@@ -5,6 +5,11 @@ from views.post_requests import delete_post, get_all_posts, get_single_post
 from views.tag_requests import create_tag, get_all_tags, get_single_tag
 from views.user_requests import create_user, get_all_users, get_single_user, login_user
 
+from views.category_requests import get_all_categorys, get_single_category, create_category
+from views.post_requests import get_all_posts, get_single_post
+from views.user_requests import create_user, get_all_users, get_single_user, login_user
+
+
 
 method_mapper = {
     "posts": {
@@ -108,6 +113,11 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = get_single_category(id)
                 else:
                     response = get_all_categorys()
+            if resource == "users":
+                if id is not None:
+                    response = get_single_user(id)
+                else:
+                    response = get_all_users()
 
             if resource == "tags":
                 if id is not None:

@@ -1,18 +1,10 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
-from views import (get_all_users, get_single_user,)
-from views.user_requests import create_user, login_user
 
-method_mapper = {
-    "users": {
-        "single": get_single_user,
-        "all": get_all_users
-    }
-}
 class HandleRequests(BaseHTTPRequestHandler):
     """Handles the requests to this server"""
 
-    def parse_url(self):
+    def parse_url(self, path):
         """Parse the url into the resource and id"""
         path_params = self.path.split('/')
         resource = path_params[1]
@@ -54,14 +46,39 @@ class HandleRequests(BaseHTTPRequestHandler):
                          'X-Requested-With, Content-Type, Accept')
         self.end_headers()
 
+    def get_all_or_single(self, resource, id):
+        if id is not None:
+            response = method_mapper[resource]["single"](id)
+
+            if response is not None:
+                self._set_headers(200)
+            else:
+                self._set_headers(404)
+                response = ''
+        else:
+            self._set_headers(200)
+            response = method_mapper[resource]["all"]()
+
+        return response
+
     def do_GET(self):
-        response = None
-        (resource, id) = self.parse_url(self.path)
-        response = self.get_all_or_single(resource, id)
-        self.wfile.write(json.dumps(response).encode())
 
-        
+        response = {}
+        parsed = self.parse_url(self.path)
 
+    # Parse URL and store entire tuple in a variable
+
+        # If the path does not include a query parameter, continue with the original if block
+        if '?' not in self.path:
+            (resource, id) = parsed
+
+            if resource == "posts":
+                if id is not None:
+                    response = get_single_post(id)
+                else:
+                    response = get_all_posts()
+
+        self.wfile.write(response.encode())
 
     def do_POST(self):
         """Make a post request to the server"""
@@ -69,7 +86,7 @@ class HandleRequests(BaseHTTPRequestHandler):
         content_len = int(self.headers.get('content-length', 0))
         post_body = json.loads(self.rfile.read(content_len))
         response = ''
-        resource, _ = self.parse_url()
+        resource, _ = self.parse_url(self.path)
 
         if resource == 'login':
             response = login_user(post_body)

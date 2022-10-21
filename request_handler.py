@@ -1,6 +1,11 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 
+from views.category_requests import get_all_categorys, get_single_category, create_category
+from views.post_requests import get_all_posts, get_single_post
+from views.user_requests import create_user, get_all_users, get_single_user, login_user
+
+
 
 method_mapper = {
     "posts": {
@@ -72,7 +77,7 @@ class HandleRequests(BaseHTTPRequestHandler):
         return response
 
     def do_GET(self):
-
+        self._set_headers(200)
         response = {}
         parsed = self.parse_url(self.path)
 
@@ -93,6 +98,11 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = get_single_category(id)
                 else:
                     response = get_all_categorys()
+            if resource == "users":
+                if id is not None:
+                    response = get_single_user(id)
+                else:
+                    response = get_all_users()
 
         self.wfile.write(response.encode())
 

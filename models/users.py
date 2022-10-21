@@ -10,6 +10,7 @@ class Users:
         bio,
         profileImgUrl,
         active,
+        created_on
     ):
         self.id = id
         self.firstName = firstName
@@ -19,4 +20,5 @@ class Users:
         self.password = password
         self.bio = bio
         self.profileImgUrl = profileImgUrl
+        self.created_on = created_on
         self.active = active

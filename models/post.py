@@ -7,6 +7,7 @@ class Post():
         self.id = id
         self.user_id = user_id
         self.category_id = category_id
+        self.category = None
         self.publication_date = publication_date
         self.title = title
         self.image_url = image_url

@@ -44,31 +44,31 @@ def get_all_posts():
     return json.dumps(posts)
 
 
-# def get_single_animal(id):
-#     with sqlite3.connect("./kennel.sqlite3") as conn:
-#         conn.row_factory = sqlite3.Row
-#         db_cursor = conn.cursor()
+def get_single_post(id):
+    with sqlite3.connect("./db.sqlite3") as conn:
+        conn.row_factory = sqlite3.Row
+        db_cursor = conn.cursor()
 
-#         # Use a ? parameter to inject a variable's value
-#         # into the SQL statement.
-#         db_cursor.execute("""
-#         SELECT
-#             a.id,
-#             a.name,
-#             a.breed,
-#             a.status,
-#             a.location_id,
-#             a.customer_id
-#         FROM animal a
-#         WHERE a.id = ?
-#         """, (id, ))
+        # Use a ? parameter to inject a variable's value
+        # into the SQL statement.
+        db_cursor.execute("""
+        SELECT
+            p.id,
+            p.user_id,
+            p.category_id,
+            p.publication_date,
+            p.image_url,
+            p.content,
+            p.approved
+        FROM Posts p
+        WHERE p.id = ?
+        """, (id, ))
 
-#         # Load the single result into memory
-#         data = db_cursor.fetchone()
+        # Load the single result into memory
+        data = db_cursor.fetchone()
 
-#         # Create an animal instance from the current row
-#         animal = Animal(data['id'], data['name'], data['breed'],
-#                         data['status'], data['location_id'],
-#                         data['customer_id'])
+        # Create an animal instance from the current row
+        post = Post(data['id'], data['user_id'], data['category_id'],
+                    data['publication_date'], data['image_url'], data['content'], data['approved'])
 
-#         return animal.__dict__
+        return json.dumps(post.__dict__)

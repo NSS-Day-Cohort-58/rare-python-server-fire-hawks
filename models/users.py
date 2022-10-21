@@ -13,12 +13,12 @@ class Users:
         created_on
     ):
         self.id = id
-        self.first_name = firstName
-        self.last_name = lastName
-        self.username = userName
+        self.first_name = first_name
+        self.last_name = last_name
+        self.username = username
         self.email = email
         self.password = password
         self.bio = bio
-        self.profileImgUrl = profileImgUrl
+        self.profile_image_url = profile_image_url
         self.created_on = created_on
         self.active = active

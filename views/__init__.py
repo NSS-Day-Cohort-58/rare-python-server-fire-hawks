@@ -1,1 +1,1 @@
-from .category_requests import get_all_categorys
+from .category_requests import get_all_categorys, get_single_category

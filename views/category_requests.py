@@ -16,7 +16,7 @@ def get_all_categorys():
         SELECT
             c.id,
             c.label
-        FROM category c
+        FROM Categories c
         """)
 
 
@@ -43,7 +43,7 @@ def get_single_category(id):
         SELECT
             c.id,
             c.label
-        FROM category c
+        FROM Categories c
         WHERE c.id = ?
         """, ( id, ))
 

@@ -1,13 +1,13 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 from views.category_requests import get_all_categorys, get_single_category
-from views.post_requests import get_all_posts
+from views.post_requests import get_all_posts, get_single_post
 
 from views.user import create_user, login_user
 
 method_mapper = {
     "posts": {
-        "single": "",
+        "single": get_single_post,
         "all": get_all_posts
     },
     "categorys": {
@@ -91,7 +91,7 @@ class HandleRequests(BaseHTTPRequestHandler):
 
             if resource == "posts":
                 if id is not None:
-                    response = "Future update"
+                    response = get_single_post(id)
                 else:
                     response = get_all_posts()
             if resource == "categorys":

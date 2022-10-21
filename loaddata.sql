@@ -10,6 +10,19 @@ CREATE TABLE "Users" (
   "created_on" date,
   "active" bit
 );
+<<<<<<< HEAD
+
+CREATE TABLE "DemotionQueue" (
+  "action" varchar,
+  "admin_id" INTEGER,
+  "approver_one_id" INTEGER,
+  FOREIGN KEY(`admin_id`) REFERENCES `Users`(`id`),
+  FOREIGN KEY(`approver_one_id`) REFERENCES `Users`(`id`),
+  PRIMARY KEY (action, admin_id, approver_one_id)
+);
+
+=======
+>>>>>>> main
 
 DROP TABLE "DemotionQueue"
 CREATE TABLE "DemotionQueue" (

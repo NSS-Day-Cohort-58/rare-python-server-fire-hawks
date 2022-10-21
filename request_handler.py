@@ -1,16 +1,5 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
-from views.post_requests import get_all_posts, get_single_post
-
-from views.user import create_user, login_user
-
-method_mapper = {
-    "posts": {
-        "single": get_single_post,
-        "all": get_all_posts
-    }
-}
-
 
 class HandleRequests(BaseHTTPRequestHandler):
     """Handles the requests to this server"""
@@ -73,7 +62,6 @@ class HandleRequests(BaseHTTPRequestHandler):
         return response
 
     def do_GET(self):
-        self._set_headers(200)
 
         response = {}
         parsed = self.parse_url(self.path)

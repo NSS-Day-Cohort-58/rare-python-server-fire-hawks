@@ -10,7 +10,7 @@ CREATE TABLE "Users" (
   "created_on" date,
   "active" bit
 );
-
+DROP TABLE "DemotionQueue"
 CREATE TABLE "DemotionQueue" (
   "action" varchar,
   "admin_id" INTEGER,
@@ -39,7 +39,7 @@ CREATE TABLE "Posts" (
   "image_url" varchar,
   "content" varchar,
   "approved" bit,
-  FOREIGN KEY(`user_id`) REFERENCES `Users`(`id`),
+  FOREIGN KEY(`user_id`) REFERENCES `Users`(`id`)
 );
 
 CREATE TABLE "Comments" (
@@ -85,6 +85,22 @@ CREATE TABLE "Categories" (
   "label" varchar
 );
 
-INSERT INTO Categories ('label') VALUES ('News');
-INSERT INTO Tags ('label') VALUES ('JavaScript');
-INSERT INTO Reactions ('label', 'image_url') VALUES ('happy', 'https://pngtree.com/so/happy');
+INSERT INTO Categories ('label') VALUES ('Lord Godzilla');
+INSERT INTO Tags ('label') VALUES ('PYTHON');
+
+
+INSERT INTO Reactions ('label', 'image_url') VALUES ('indiff', 'https://pngtree.com/so/indifferent');
+
+
+INSERT INTO Comments VALUES (Null, 2, 2, 'LizardButthole')
+
+INSERT INTO PostReactions VALUES (Null, 2, 2, 2)
+INSERT INTO PostTags VALUES (Null, 1, 2 )
+
+INSERT INTO Posts VALUES (Null, 1, 2, 'NoneButthole', CURRENT_TIMESTAMP, 'NoneButtholePic.img', 'Twerk', True)
+
+INSERT INTO Subscriptions VALUES (Null, 1, 2, CURRENT_TIMESTAMP)
+
+
+INSERT INTO Users VALUES (NULL, 'matt', 'Martino', 'matt@email.com', 'Happenin Dude', 'MattCat', 'butthole', 'MattCat.img', CURRENT_TIMESTAMP, True)
+INSERT INTO Users VALUES (NULL, 'Kelly', 'franidonno', 'kelly@email.com', 'Happenin lady', 'KellyCat', 'butthole', 'KellyCat.img', CURRENT_TIMESTAMP, True)

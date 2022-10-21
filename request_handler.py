@@ -2,7 +2,8 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 from views.category_requests import get_all_categorys, get_single_category, create_category
 from views.post_requests import get_all_posts, get_single_post
-from views.user_request import create_user, login_user
+from views.tag_requests import create_tag, get_all_tags, get_single_tag
+from views.user_requests import create_user, login_user
 
 
 method_mapper = {
@@ -13,6 +14,10 @@ method_mapper = {
     "categories": {
         "single": get_single_category,
         "all": get_all_categorys
+    },
+    "tags": {
+        "single": get_single_tag,
+        "all": get_all_tags
     }
 }
 
@@ -100,6 +105,13 @@ class HandleRequests(BaseHTTPRequestHandler):
                 else:
                     response = get_all_categorys()
 
+            if resource == "tags":
+                if id is not None:
+                    response = get_single_tag(id)
+                else:
+                    response = get_all_tags()
+
+
         self.wfile.write(response.encode())
 
     def do_POST(self):
@@ -116,6 +128,8 @@ class HandleRequests(BaseHTTPRequestHandler):
             response = create_user(post_body)
         if resource == 'categories':
             response = create_category(post_body)
+        if resource == 'tag':
+            response = create_tag(post_body)
 
         self.wfile.write(response.encode())
 

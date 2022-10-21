@@ -10,7 +10,7 @@ CREATE TABLE "Users" (
   "created_on" date,
   "active" bit
 );
-DROP TABLE "DemotionQueue"
+
 CREATE TABLE "DemotionQueue" (
   "action" varchar,
   "admin_id" INTEGER,

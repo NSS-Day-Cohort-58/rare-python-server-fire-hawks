@@ -1,9 +1,14 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
+from views import (get_all_users, get_single_user,)
+from views.user_requests import create_user, login_user
 
-from views.user import create_user, login_user
-
-
+method_mapper = {
+    "users": {
+        "single": get_single_user,
+        "all": get_all_users
+    }
+}
 class HandleRequests(BaseHTTPRequestHandler):
     """Handles the requests to this server"""
 
@@ -50,8 +55,12 @@ class HandleRequests(BaseHTTPRequestHandler):
         self.end_headers()
 
     def do_GET(self):
-        """Handle Get requests to the server"""
-        pass
+        response = None
+        (resource, id) = self.parse_url(self.path)
+        response = self.get_all_or_single(resource, id)
+        self.wfile.write(json.dumps(response).encode())
+
+        
 
 
     def do_POST(self):

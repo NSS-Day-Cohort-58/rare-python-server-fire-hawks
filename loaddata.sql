@@ -21,6 +21,20 @@ CREATE TABLE "DemotionQueue" (
   PRIMARY KEY (action, admin_id, approver_one_id)
 );
 
+=======
+>>>>>>> main
+
+DROP TABLE "DemotionQueue"
+CREATE TABLE "DemotionQueue" (
+  "action" varchar,
+  "admin_id" INTEGER,
+  "approver_one_id" INTEGER,
+  FOREIGN KEY(`admin_id`) REFERENCES `Users`(`id`),
+  FOREIGN KEY(`approver_one_id`) REFERENCES `Users`(`id`),
+  PRIMARY KEY (action, admin_id, approver_one_id)
+);
+
+
 CREATE TABLE "Subscriptions" (
   "id" INTEGER PRIMARY KEY AUTOINCREMENT,
   "follower_id" INTEGER,
@@ -141,3 +155,5 @@ SELECT
     p.content,
     p.approved
 FROM Posts p
+
+INSERT INTO Categories ('label') VALUES ('Nature');

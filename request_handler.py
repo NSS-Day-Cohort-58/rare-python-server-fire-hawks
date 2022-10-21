@@ -1,13 +1,12 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
-from views.post_requests import get_all_posts, get_single_post, delete_post
 
-from views.user_requests import create_user, login_user
 
 method_mapper = {
     "posts": {
         "single": get_single_post,
         "all": get_all_posts
+
     }
 }
 
@@ -89,6 +88,12 @@ class HandleRequests(BaseHTTPRequestHandler):
                 else:
                     response = get_all_posts()
 
+            if resource == "categories":
+                if id is not None:
+                    response = get_single_category(id)
+                else:
+                    response = get_all_categorys()
+
         self.wfile.write(response.encode())
 
     def do_POST(self):
@@ -103,6 +108,8 @@ class HandleRequests(BaseHTTPRequestHandler):
             response = login_user(post_body)
         if resource == 'register':
             response = create_user(post_body)
+        if resource == 'categories':
+            response = create_category(post_body)
 
         self.wfile.write(response.encode())
 

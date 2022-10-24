@@ -4,3 +4,4 @@ from .user_requests import get_all_users, get_single_user
 from .tag_requests import get_all_tags, get_single_tag, create_tag
 from .reaction_requests import get_all_reactions, get_single_reaction, create_reaction
 from .comments_requests import get_all_comments, get_single_comment, create_comment, delete_comment
+from .post_reactions_requests import get_all_post_reactions, get_single_post_reaction, create_post_reaction

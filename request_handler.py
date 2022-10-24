@@ -4,7 +4,7 @@ from views.category_requests import get_all_categorys, get_single_category, crea
 
 from views.comments_requests import create_comment, get_all_comments, get_single_comment, delete_comment
 from views.post_requests import create_post, delete_post, get_all_posts, get_single_post
-
+from views.post_reactions_requests import get_all_post_reactions, get_single_post_reaction, create_post_reaction
 from views.post_requests import delete_post, get_all_posts, get_single_post
 from views.reaction_requests import create_reaction, get_all_reactions, get_single_reaction
 from views.tag_requests import create_tag, get_all_tags, get_single_tag
@@ -32,6 +32,10 @@ method_mapper = {
     "reactions": {
         "single": get_single_reaction,
         "all": get_all_reactions
+    },
+    "postReactions": {
+        "single": get_single_post_reaction,
+        "all": get_all_post_reactions
     }
 }
 
@@ -139,6 +143,11 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = get_single_tag(id)
                 else:
                     response = get_all_tags()
+            if resource == "postReactions":
+                if id is not None:
+                    response = get_single_post_reaction(id)
+                else:
+                    response = get_all_post_reactions()
 
             
 
@@ -168,6 +177,8 @@ class HandleRequests(BaseHTTPRequestHandler):
             response = create_reaction(post_body)
         if resource == 'posts':
             response = create_post(post_body)
+        if resource == 'postReactions':
+            response = create_post_reaction(post_body)
 
         self.wfile.write(response.encode())
 

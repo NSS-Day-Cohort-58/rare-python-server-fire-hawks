@@ -2,7 +2,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 from views.category_requests import get_all_categorys, get_single_category, create_category
 
-from views.comments_requests import create_comment, get_all_comments, get_single_comment
+from views.comments_requests import create_comment, get_all_comments, get_single_comment, delete_comment
 from views.post_requests import create_post, delete_post, get_all_posts, get_single_post
 
 from views.post_requests import delete_post, get_all_posts, get_single_post
@@ -186,6 +186,9 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if resource == "posts":
             delete_post(id)
+        
+        if resource == "comments":
+            delete_comment(id)
 
         self.wfile.write("".encode())
 

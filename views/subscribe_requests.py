@@ -1,68 +1,81 @@
-# import sqlite3
-# import json
-# from models import Tag
+import sqlite3
+import json
+from models import Subscriptions
 
 
-# def get_all_tags():
-#     # Open a connection to the database
-#     with sqlite3.connect("./db.sqlite3") as conn:
+def get_all_subscriptions():
+    # Open a connection to the database
+    with sqlite3.connect("./db.sqlite3") as conn:
 
-#         # Just use these. It's a Black Box.
-#         conn.row_factory = sqlite3.Row
-#         db_cursor = conn.cursor()
+        # Just use these. It's a Black Box.
+        conn.row_factory = sqlite3.Row
+        db_cursor = conn.cursor()
 
-#         # Write the SQL query to get the information you want
-#         db_cursor.execute("""
-#         SELECT
-#             t.id,
-#             t.label
-#         FROM Tags t
-#         """)
+        # Write the SQL query to get the information you want
+        db_cursor.execute("""
+        SELECT
+            u.id,
+            u.follower_id,
+            u.author_id,
+            u.created_on
+        FROM Subscriptions u
+        """)
 
-#         tags = []
+        subscriptions = []
 
-#         dataset = db_cursor.fetchall()
+        dataset = db_cursor.fetchall()
 
-#         for row in dataset:
+        for row in dataset:
 
-#             tag = Tag(row['id'], row['label'])
+            subscription = Subscriptions(row['id'], row['follower_id'], row['author_id'], row['created_on'])
 
-#             tags.append(tag.__dict__)
+            subscriptions.append(subscription.__dict__)
 
-#     return json.dumps(tags)
+    return json.dumps(subscriptions)
 
 
-# def get_single_tag(id):
-#     with sqlite3.connect("./db.sqlite3") as conn:
-#         conn.row_factory = sqlite3.Row
-#         db_cursor = conn.cursor()
+def get_single_subscription(id):
+    with sqlite3.connect("./db.sqlite3") as conn:
+        conn.row_factory = sqlite3.Row
+        db_cursor = conn.cursor()
 
-#         db_cursor.execute("""
-#         SELECT
-#             t.id,
-#             t.label
-#         FROM Tags t
-#         WHERE t.id = ?
-#         """, ( id, ))
+        db_cursor.execute("""
+        SELECT
+            u.id,
+            u.follower_id,
+            u.author_id,
+            u.created_on
+        FROM Subscriptions u
+        WHERE u.id = ?
+        """, ( id, ))
 
-#         data = db_cursor.fetchone()
+        data = db_cursor.fetchone()
 
-#         tag = Tag(data['id'], data['label'])
+        subscription = Subscriptions(data['id'], data['follower_id'], data['author_id'], data['created_on'])
 
-#         return json.dumps(tag.__dict__)
+        return json.dumps(subscription.__dict__)
 
-# def create_tag(new_tag):
-#     with sqlite3.connect("./db.sqlite3") as conn:
-#         db_cursor = conn.cursor()
+def create_subscription(new_subscription):
+    with sqlite3.connect("./db.sqlite3") as conn:
+        db_cursor = conn.cursor()
 
-#         db_cursor.execute("""
-#         INSERT INTO Tags
-#             ( label )
-#         VALUES
-#             ( ? );
-#         """, (new_tag['label'], ))
+        db_cursor.execute("""
+        INSERT INTO Subscriptions
+            ( follower_id, author_id, created_on )
+        VALUES
+            ( ?, ?, ? );
+        """, (new_subscription['follower_id'], new_subscription['author_id'], new_subscription['created_on'], ))
 
-#         id = db_cursor.lastrowid
+        id = db_cursor.lastrowid
 
-#         new_tag['id'] = id
-#     return new_tag
+        new_subscription['id'] = id
+    return json.dumps(new_subscription)
+
+def delete_subscription(id):
+    with sqlite3.connect("./db.sqlite3") as conn:
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        DELETE FROM Subscriptions
+        WHERE id = ?
+        """, (id, ))

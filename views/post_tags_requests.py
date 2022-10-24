@@ -1,68 +1,79 @@
-# import sqlite3
-# import json
-# from models import Tag
+import sqlite3
+import json
+from models import PostTags
 
 
-# def get_all_tags():
-#     # Open a connection to the database
-#     with sqlite3.connect("./db.sqlite3") as conn:
+def get_all_post_tags():
+    # Open a connection to the database
+    with sqlite3.connect("./db.sqlite3") as conn:
 
-#         # Just use these. It's a Black Box.
-#         conn.row_factory = sqlite3.Row
-#         db_cursor = conn.cursor()
+        # Just use these. It's a Black Box.
+        conn.row_factory = sqlite3.Row
+        db_cursor = conn.cursor()
 
-#         # Write the SQL query to get the information you want
-#         db_cursor.execute("""
-#         SELECT
-#             t.id,
-#             t.label
-#         FROM Tags t
-#         """)
+        # Write the SQL query to get the information you want
+        db_cursor.execute("""
+        SELECT
+            g.id,
+            g.post_id,
+            g.tag_id
+        FROM PostTags g
+        """)
 
-#         tags = []
+        post_tags = []
 
-#         dataset = db_cursor.fetchall()
+        dataset = db_cursor.fetchall()
 
-#         for row in dataset:
+        for row in dataset:
 
-#             tag = Tag(row['id'], row['label'])
+            post_tag = PostTags(row['id'], row['post_id'], row['tag_id'])
 
-#             tags.append(tag.__dict__)
+            post_tags.append(post_tag.__dict__)
 
-#     return json.dumps(tags)
+    return json.dumps(post_tags)
 
 
-# def get_single_tag(id):
-#     with sqlite3.connect("./db.sqlite3") as conn:
-#         conn.row_factory = sqlite3.Row
-#         db_cursor = conn.cursor()
+def get_single_post_tag(id):
+    with sqlite3.connect("./db.sqlite3") as conn:
+        conn.row_factory = sqlite3.Row
+        db_cursor = conn.cursor()
 
-#         db_cursor.execute("""
-#         SELECT
-#             t.id,
-#             t.label
-#         FROM Tags t
-#         WHERE t.id = ?
-#         """, ( id, ))
+        db_cursor.execute("""
+        SELECT
+            g.id,
+            g.post_id,
+            g.tag_id
+        FROM PostTags g
+        WHERE g.id = ?
+        """, ( id, ))
 
-#         data = db_cursor.fetchone()
+        data = db_cursor.fetchone()
 
-#         tag = Tag(data['id'], data['label'])
+        post_tag = PostTags(data['id'], data['post_id'], data['tag_id'])
 
-#         return json.dumps(tag.__dict__)
+        return json.dumps(post_tag.__dict__)
 
-# def create_tag(new_tag):
-#     with sqlite3.connect("./db.sqlite3") as conn:
-#         db_cursor = conn.cursor()
+def create_post_tag(new_post_tag):
+    with sqlite3.connect("./db.sqlite3") as conn:
+        db_cursor = conn.cursor()
 
-#         db_cursor.execute("""
-#         INSERT INTO Tags
-#             ( label )
-#         VALUES
-#             ( ? );
-#         """, (new_tag['label'], ))
+        db_cursor.execute("""
+        INSERT INTO PostTags
+            ( post_id, tag_id )
+        VALUES
+            ( ?, ? );
+        """, (new_post_tag['post_id'], new_post_tag['tag_id'],))
 
-#         id = db_cursor.lastrowid
+        id = db_cursor.lastrowid
 
-#         new_tag['id'] = id
-#     return new_tag
+        new_post_tag['id'] = id
+    return json.dumps(new_post_tag)
+
+def delete_post_tag(id):
+    with sqlite3.connect("./db.sqlite3") as conn:
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        DELETE FROM PostTags
+        WHERE id = ?
+        """, (id, ))

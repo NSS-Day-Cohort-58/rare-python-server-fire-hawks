@@ -70,3 +70,12 @@ def create_post_reaction(new_post_reaction):
 
         new_post_reaction['id'] = id
     return json.dumps(new_post_reaction)
+
+def delete_post_reaction(id):
+    with sqlite3.connect("./db.sqlite3") as conn:
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        DELETE FROM PostReactions
+        WHERE id = ?
+        """, (id, ))

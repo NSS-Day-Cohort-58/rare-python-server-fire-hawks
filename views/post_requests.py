@@ -2,6 +2,7 @@ import sqlite3
 import json
 from models import Category
 from models.post import Post
+from models.users import Users
 
 
 def get_all_posts():
@@ -23,10 +24,21 @@ def get_all_posts():
             p.image_url,
             p.content,
             p.approved,
-            c.label categorie_label
+            c.label categorie_label,
+            u.first_name,
+            u.last_name,
+            u.email,
+            u.bio,
+            u.username,
+            u.password,
+            u.profile_image_url,
+            u.created_on,
+            u.active
         FROM Posts p
         JOIN Categories c
             ON c.id = p.category_id
+        JOIN Users u
+            ON u.id = p.user_id
        
         """)
 
@@ -42,10 +54,13 @@ def get_all_posts():
         # Create an animal instance from the current row
         post = Post(row['id'], row['user_id'], row['category_id'], row['title'],
                     row['publication_date'], row['image_url'], row['content'], row['approved'])
+        user = Users(row["id"], row["first_name"], row["last_name"], row["username"], row["email"], row["password"], row["bio"], row["profile_image_url"], row["created_on"], row["active"])
+        
         category = Category(row['id'], row['categorie_label'])
 
         # Add the dictionary representation of the location to the animal
         post.category = category.__dict__
+        post.user = user.__dict__
 
         posts.append(post.__dict__)
 

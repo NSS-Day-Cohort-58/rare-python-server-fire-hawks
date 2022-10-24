@@ -1,9 +1,9 @@
 import sqlite3
 import json
-from models import Reaction
+from models import PostTags
 
 
-def get_all_reactions():
+def get_all_post_tags():
     # Open a connection to the database
     with sqlite3.connect("./db.sqlite3") as conn:
 
@@ -14,66 +14,66 @@ def get_all_reactions():
         # Write the SQL query to get the information you want
         db_cursor.execute("""
         SELECT
-            r.id,
-            r.label,
-            r.image_url
-        FROM Reactions r
+            g.id,
+            g.post_id,
+            g.tag_id
+        FROM PostTags g
         """)
 
-        reactions = []
+        post_tags = []
 
         dataset = db_cursor.fetchall()
 
         for row in dataset:
 
-            reaction = Reaction(row['id'], row['label'], row['image_url'])
+            post_tag = PostTags(row['id'], row['post_id'], row['tag_id'])
 
-            reactions.append(reaction.__dict__)
+            post_tags.append(post_tag.__dict__)
 
-    return json.dumps(reactions)
+    return json.dumps(post_tags)
 
 
-def get_single_reaction(id):
+def get_single_post_tag(id):
     with sqlite3.connect("./db.sqlite3") as conn:
         conn.row_factory = sqlite3.Row
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
         SELECT
-            r.id,
-            r.label,
-            r.image_url
-        FROM Reactions r
-        WHERE r.id = ?
+            g.id,
+            g.post_id,
+            g.tag_id
+        FROM PostTags g
+        WHERE g.id = ?
         """, ( id, ))
 
         data = db_cursor.fetchone()
 
-        reaction = Reaction(data['id'], data['label'], data['image_url'])
+        post_tag = PostTags(data['id'], data['post_id'], data['tag_id'])
 
-        return json.dumps(reaction.__dict__)
+        return json.dumps(post_tag.__dict__)
 
-def create_reaction(new_reaction):
+def create_post_tag(new_post_tag):
     with sqlite3.connect("./db.sqlite3") as conn:
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
-        INSERT INTO Reactions
-            ( label, image_url )
+        INSERT INTO PostTags
+            ( post_id, tag_id )
         VALUES
             ( ?, ? );
-        """, (new_reaction['label'], new_reaction['image_url'], ))
+        """, (new_post_tag['post_id'], new_post_tag['tag_id'],))
 
         id = db_cursor.lastrowid
 
-        new_reaction['id'] = id
-    return json.dumps(new_reaction)
+        new_post_tag['id'] = id
+    return json.dumps(new_post_tag)
 
-def delete_reaction(id):
+def delete_post_tag(id):
     with sqlite3.connect("./db.sqlite3") as conn:
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
-        DELETE FROM Reactions
+        DELETE FROM PostTags
         WHERE id = ?
         """, (id, ))

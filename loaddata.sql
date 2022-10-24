@@ -213,3 +213,4 @@ SELECT
 FROM Posts p
 JOIN Categories c
     ON c.id = p.category_id
+

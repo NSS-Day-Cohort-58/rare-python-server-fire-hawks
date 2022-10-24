@@ -130,11 +130,7 @@ class HandleRequests(BaseHTTPRequestHandler):
                 else:
                     response = get_all_tags()
 
-            if resource == "users":
-                if id is not None:
-                    response = get_single_user(id)
-                else:
-                    response = get_all_users()
+            
 
         self.wfile.write(response.encode())
 

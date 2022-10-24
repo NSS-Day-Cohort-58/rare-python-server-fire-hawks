@@ -1,9 +1,9 @@
 import sqlite3
 import json
-from models import Category
+from models import PostTags
 
 
-def get_all_categorys():
+def get_all_post_tags():
     # Open a connection to the database
     with sqlite3.connect("./db.sqlite3") as conn:
 
@@ -14,64 +14,66 @@ def get_all_categorys():
         # Write the SQL query to get the information you want
         db_cursor.execute("""
         SELECT
-            c.id,
-            c.label
-        FROM Categories c
+            g.id,
+            g.post_id,
+            g.tag_id
+        FROM PostTags g
         """)
 
-
-        categorys = []
+        post_tags = []
 
         dataset = db_cursor.fetchall()
 
         for row in dataset:
 
-            category = Category(row['id'], row['label'])
+            post_tag = PostTags(row['id'], row['post_id'], row['tag_id'])
 
-            categorys.append(category.__dict__)
+            post_tags.append(post_tag.__dict__)
 
-    return json.dumps(categorys)
+    return json.dumps(post_tags)
 
-def get_single_category(id):
+
+def get_single_post_tag(id):
     with sqlite3.connect("./db.sqlite3") as conn:
         conn.row_factory = sqlite3.Row
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
         SELECT
-            c.id,
-            c.label
-        FROM Categories c
-        WHERE c.id = ?
+            g.id,
+            g.post_id,
+            g.tag_id
+        FROM PostTags g
+        WHERE g.id = ?
         """, ( id, ))
 
         data = db_cursor.fetchone()
 
-        category = Category(data['id'], data['label'])
+        post_tag = PostTags(data['id'], data['post_id'], data['tag_id'])
 
-        return json.dumps(category.__dict__)
+        return json.dumps(post_tag.__dict__)
 
-def create_category(new_category):
+def create_post_tag(new_post_tag):
     with sqlite3.connect("./db.sqlite3") as conn:
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
-        INSERT INTO Categories
-            ( label )
+        INSERT INTO PostTags
+            ( post_id, tag_id )
         VALUES
-            ( ? );
-        """, (new_category['label'], ))
+            ( ?, ? );
+        """, (new_post_tag['post_id'], new_post_tag['tag_id'],))
 
         id = db_cursor.lastrowid
 
-        new_category['id'] = id
-    return new_category
+        new_post_tag['id'] = id
+    return json.dumps(new_post_tag)
 
-def delete_category(id):
+def delete_post_tag(id):
     with sqlite3.connect("./db.sqlite3") as conn:
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
-        DELETE FROM Categories
+        DELETE FROM PostTags
         WHERE id = ?
         """, (id, ))

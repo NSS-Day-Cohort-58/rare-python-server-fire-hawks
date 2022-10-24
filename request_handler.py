@@ -1,9 +1,17 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
-from views.category_requests import get_all_categorys, get_single_category, create_category
-from views.post_requests import get_all_posts, get_single_post
-from views.user_request import create_user, login_user
+from views.category_requests import get_all_categorys, get_single_category, create_category, delete_category
 
+from views.comments_requests import create_comment, get_all_comments, get_single_comment, delete_comment
+from views.post_requests import create_post, delete_post, get_all_posts, get_single_post
+from views.post_reactions_requests import get_all_post_reactions, get_single_post_reaction, create_post_reaction, delete_post_reaction
+from views.post_requests import delete_post, get_all_posts, get_single_post
+from views.post_tags_requests import create_post_tag, get_all_post_tags, get_single_post_tag, delete_post_tag
+from views.reaction_requests import create_reaction, get_all_reactions, get_single_reaction, delete_reaction
+from views.tag_requests import create_tag, get_all_tags, get_single_tag, delete_tag
+from views.post_tags_requests import get_all_post_tags, get_single_post_tag, create_post_tag, delete_post_tag
+from views.user_requests import create_user, delete_user, get_all_users, get_single_user, login_user
+from views.subscribe_requests import create_subscription, get_all_subscriptions, get_single_subscription, delete_subscription
 
 method_mapper = {
     "posts": {
@@ -13,6 +21,30 @@ method_mapper = {
     "categories": {
         "single": get_single_category,
         "all": get_all_categorys
+    },
+    "tags": {
+        "single": get_single_tag,
+        "all": get_all_tags
+    },
+    "users": {
+        "single": get_single_user,
+        "all": get_all_users
+    },
+    "reactions": {
+        "single": get_single_reaction,
+        "all": get_all_reactions
+    },
+    "postReactions": {
+        "single": get_single_post_reaction,
+        "all": get_all_post_reactions
+    },
+    "postTags": {
+        "single": get_single_post_tag,
+        "all": get_all_post_tags
+    },
+    "subscriptions": {
+        "single": get_single_subscription,
+        "all": get_all_subscriptions
     }
 }
 
@@ -78,7 +110,7 @@ class HandleRequests(BaseHTTPRequestHandler):
         return response
 
     def do_GET(self):
-
+        self._set_headers(200)
         response = {}
         parsed = self.parse_url(self.path)
 
@@ -99,6 +131,44 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = get_single_category(id)
                 else:
                     response = get_all_categorys()
+            if resource == "users":
+                if id is not None:
+                    response = get_single_user(id)
+                else:
+                    response = get_all_users()
+            if resource == "comments":
+                if id is not None:
+                    response = get_single_comment(id)
+                else:
+                    response = get_all_comments()
+                    
+            if resource == "reactions":
+                if id is not None:
+                    response = get_single_reaction(id)
+                else:
+                    response = get_all_reactions()
+            if resource == "tags":
+                if id is not None:
+                    response = get_single_tag(id)
+                else:
+                    response = get_all_tags()
+            if resource == "postReactions":
+                if id is not None:
+                    response = get_single_post_reaction(id)
+                else:
+                    response = get_all_post_reactions()
+            if resource == "postTags":
+                if id is not None:
+                    response = get_single_post_tag(id)
+                else:
+                    response = get_all_post_tags()
+            if resource == "subscriptions":
+                if id is not None:
+                    response = get_single_subscription(id)
+                else:
+                    response = get_all_subscriptions()
+
+            
 
         self.wfile.write(response.encode())
 
@@ -116,6 +186,22 @@ class HandleRequests(BaseHTTPRequestHandler):
             response = create_user(post_body)
         if resource == 'categories':
             response = create_category(post_body)
+        if resource == 'comments':
+            response = create_comment(post_body)
+        if resource == 'tags':
+            response = create_tag(post_body)
+        if resource == 'users':
+            response = create_user(post_body)
+        if resource == 'reactions':
+            response = create_reaction(post_body)
+        if resource == 'posts':
+            response = create_post(post_body)
+        if resource == 'postReactions':
+            response = create_post_reaction(post_body)
+        if resource == 'postTags':
+            response = create_post_tag(post_body)
+        if resource == 'subscriptions':
+            response = create_subscription(post_body)
 
         self.wfile.write(response.encode())
 
@@ -124,8 +210,30 @@ class HandleRequests(BaseHTTPRequestHandler):
         pass
 
     def do_DELETE(self):
-        """Handle DELETE Requests"""
-        pass
+        self._set_headers(204)
+
+        (resource, id) = self.parse_url(self.path)
+
+        if resource == "posts":
+            delete_post(id)
+        if resource == "comments":
+            delete_comment(id)
+        if resource == "subscriptions":
+            delete_subscription(id)
+        if resource == "tags":
+            delete_tag(id)
+        if resource == "categories":
+            delete_category(id)
+        if resource == "postReactions":
+            delete_post_reaction(id)
+        if resource == "postTags":
+            delete_post_tag(id)
+        if resource == "reactions":
+            delete_reaction(id)
+        if resource == "users":
+            delete_user(id)
+
+        self.wfile.write("".encode())
 
 
 def main():

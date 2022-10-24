@@ -1,9 +1,9 @@
 import sqlite3
 import json
-from models import Category
+from models import Reaction
 
 
-def get_all_categorys():
+def get_all_reactions():
     # Open a connection to the database
     with sqlite3.connect("./db.sqlite3") as conn:
 
@@ -14,64 +14,66 @@ def get_all_categorys():
         # Write the SQL query to get the information you want
         db_cursor.execute("""
         SELECT
-            c.id,
-            c.label
-        FROM Categories c
+            r.id,
+            r.label,
+            r.image_url
+        FROM Reactions r
         """)
 
-
-        categorys = []
+        reactions = []
 
         dataset = db_cursor.fetchall()
 
         for row in dataset:
 
-            category = Category(row['id'], row['label'])
+            reaction = Reaction(row['id'], row['label'], row['image_url'])
 
-            categorys.append(category.__dict__)
+            reactions.append(reaction.__dict__)
 
-    return json.dumps(categorys)
+    return json.dumps(reactions)
 
-def get_single_category(id):
+
+def get_single_reaction(id):
     with sqlite3.connect("./db.sqlite3") as conn:
         conn.row_factory = sqlite3.Row
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
         SELECT
-            c.id,
-            c.label
-        FROM Categories c
-        WHERE c.id = ?
+            r.id,
+            r.label,
+            r.image_url
+        FROM Reactions r
+        WHERE r.id = ?
         """, ( id, ))
 
         data = db_cursor.fetchone()
 
-        category = Category(data['id'], data['label'])
+        reaction = Reaction(data['id'], data['label'], data['image_url'])
 
-        return json.dumps(category.__dict__)
+        return json.dumps(reaction.__dict__)
 
-def create_category(new_category):
+def create_reaction(new_reaction):
     with sqlite3.connect("./db.sqlite3") as conn:
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
-        INSERT INTO Categories
-            ( label )
+        INSERT INTO Reactions
+            ( label, image_url )
         VALUES
-            ( ? );
-        """, (new_category['label'], ))
+            ( ?, ? );
+        """, (new_reaction['label'], new_reaction['image_url'], ))
 
         id = db_cursor.lastrowid
 
-        new_category['id'] = id
-    return new_category
+        new_reaction['id'] = id
+    return json.dumps(new_reaction)
 
-def delete_category(id):
+def delete_reaction(id):
     with sqlite3.connect("./db.sqlite3") as conn:
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
-        DELETE FROM Categories
+        DELETE FROM Reactions
         WHERE id = ?
         """, (id, ))

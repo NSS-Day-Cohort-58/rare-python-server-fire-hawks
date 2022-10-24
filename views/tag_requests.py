@@ -1,9 +1,9 @@
 import sqlite3
 import json
-from models import Category
+from models import Tag
 
 
-def get_all_categorys():
+def get_all_tags():
     # Open a connection to the database
     with sqlite3.connect("./db.sqlite3") as conn:
 
@@ -14,64 +14,64 @@ def get_all_categorys():
         # Write the SQL query to get the information you want
         db_cursor.execute("""
         SELECT
-            c.id,
-            c.label
-        FROM Categories c
+            t.id,
+            t.label
+        FROM Tags t
         """)
 
-
-        categorys = []
+        tags = []
 
         dataset = db_cursor.fetchall()
 
         for row in dataset:
 
-            category = Category(row['id'], row['label'])
+            tag = Tag(row['id'], row['label'])
 
-            categorys.append(category.__dict__)
+            tags.append(tag.__dict__)
 
-    return json.dumps(categorys)
+    return json.dumps(tags)
 
-def get_single_category(id):
+
+def get_single_tag(id):
     with sqlite3.connect("./db.sqlite3") as conn:
         conn.row_factory = sqlite3.Row
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
         SELECT
-            c.id,
-            c.label
-        FROM Categories c
-        WHERE c.id = ?
+            t.id,
+            t.label
+        FROM Tags t
+        WHERE t.id = ?
         """, ( id, ))
 
         data = db_cursor.fetchone()
 
-        category = Category(data['id'], data['label'])
+        tag = Tag(data['id'], data['label'])
 
-        return json.dumps(category.__dict__)
+        return json.dumps(tag.__dict__)
 
-def create_category(new_category):
+def create_tag(new_tag):
     with sqlite3.connect("./db.sqlite3") as conn:
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
-        INSERT INTO Categories
+        INSERT INTO Tags
             ( label )
         VALUES
             ( ? );
-        """, (new_category['label'], ))
+        """, (new_tag['label'], ))
 
         id = db_cursor.lastrowid
 
-        new_category['id'] = id
-    return new_category
+        new_tag['id'] = id
+    return new_tag
 
-def delete_category(id):
+def delete_tag(id):
     with sqlite3.connect("./db.sqlite3") as conn:
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
-        DELETE FROM Categories
+        DELETE FROM Tags
         WHERE id = ?
         """, (id, ))

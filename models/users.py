@@ -2,21 +2,23 @@ class Users:
     def __init__(
         self,
         id,
-        firstName,
-        lastName,
-        userName,
+        first_name,
+        last_name,
+        username,
         email,
         password,
         bio,
-        profileImgUrl,
+        profile_image_url,
         active,
+        created_on
     ):
         self.id = id
-        self.firstName = firstName
-        self.lastName = lastName
-        self.userName = userName
+        self.first_name = first_name
+        self.last_name = last_name
+        self.username = username
         self.email = email
         self.password = password
         self.bio = bio
-        self.profileImgUrl = profileImgUrl
+        self.profile_image_url = profile_image_url
+        self.created_on = created_on
         self.active = active

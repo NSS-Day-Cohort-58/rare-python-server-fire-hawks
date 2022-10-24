@@ -16,13 +16,14 @@ def get_all_users():
             """
         SELECT
             u.id,
-            u.firstName,
-            u.lastName,
-            u.userName,
+            u.first_name,
+            u.last_name,
+            u.username,
             u.email,
             u.password,
             u.bio,
-            u.profileImgUrl,
+            u.profile_image_url,
+            u.created_on,
             u.active
         FROM Users u
         """
@@ -32,17 +33,20 @@ def get_all_users():
         for row in dataset:
             user = Users(
                 row["id"],
-                row["firstName"],
-                row["lastName"],
-                row["userName"],
+                row["first_name"],
+                row["last_name"],
+                row["username"],
                 row["email"],
                 row["password"],
                 row["bio"],
-                row["profileImgUrl"],
-                row["active"],
+                row["profile_image_url"],
+                row["created_on"],
+                row["active"]
+
             )
             users.append(user.__dict__)
-    return users
+    return json.dumps(users)
+
 
 def get_single_user(id):
     with sqlite3.connect("./db.sqlite3") as conn:
@@ -55,13 +59,14 @@ def get_single_user(id):
             """
         SELECT
             u.id,
-            u.firstName,
-            u.lastName,
-            u.userName,
+            u.first_name,
+            u.last_name,
+            u.username,
             u.email,
             u.password,
             u.bio,
-            u.profileImgUrl,
+            u.profile_image_url,
+            u.created_on,
             u.active
         FROM Users u
         WHERE u.id = ?
@@ -75,16 +80,19 @@ def get_single_user(id):
         # Create an animal instance from the current row
         user = Users(
             data["id"],
-            data["firstName"],
-            data["lastName"],
-            data["userName"],
+            data["first_name"],
+            data["last_name"],
+            data["username"],
             data["email"],
             data["password"],
             data["bio"],
-            data["profileImgUrl"],
+            data["profile_image_url"],
+            data["created_on"],
             data["active"]
         )
-        return user.__dict__
+        return json.dumps(user.__dict__
+                          )
+
 
 def login_user(user):
     """Checks for the user in the database
@@ -151,3 +159,12 @@ def create_user(user):
         id = db_cursor.lastrowid
 
         return json.dumps({"token": id, "valid": True})
+
+def delete_user(id):
+    with sqlite3.connect("./db.sqlite3") as conn:
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        DELETE FROM Users
+        WHERE id = ?
+        """, (id, ))

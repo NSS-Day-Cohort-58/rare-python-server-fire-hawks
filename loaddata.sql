@@ -157,3 +157,60 @@ SELECT
 FROM Posts p
 
 INSERT INTO Categories ('label') VALUES ('Nature');
+
+SELECT
+    p.id,
+    p.user_id,
+    p.category_id,
+    p.title,
+    p.publication_date,
+    p.image_url,
+    p.content,
+    p.approved,
+    c.label categorie_label
+FROM Posts p
+JOIN Categories c
+    ON c.id = p.category_id
+
+
+SELECT
+    u.id,
+    u.first_name,
+    u.last_name,
+    u.username,
+    u.email,
+    u.password,
+    u.bio,
+    u.profile_image_url,
+    u.created_on,
+    u.active
+FROM Users u
+
+SELECT
+    u.id,
+    u.first_name,
+    u.last_name,
+    u.username,
+    u.email,
+    u.password,
+    u.bio,
+    u.profile_image_url,
+    u.created_on,
+    u.active
+FROM Users u
+WHERE u.id = 2
+
+SELECT
+    p.id,
+    p.user_id,
+    p.category_id,
+    p.title,
+    p.publication_date,
+    p.image_url,
+    p.content,
+    p.approved,
+    c.label categorie_label
+FROM Posts p
+JOIN Categories c
+    ON c.id = p.category_id
+

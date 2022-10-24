@@ -65,4 +65,4 @@ def create_tag(new_tag):
         id = db_cursor.lastrowid
 
         new_tag['id'] = id
-    return new_tag
+    return json.dumps(new_tag)

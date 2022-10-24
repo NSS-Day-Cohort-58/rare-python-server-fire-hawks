@@ -214,3 +214,30 @@ FROM Posts p
 JOIN Categories c
     ON c.id = p.category_id
 
+
+
+
+SELECT
+    p.id,
+    p.user_id,
+    p.category_id,
+    p.title,
+    p.publication_date,
+    p.image_url,
+    p.content,
+    p.approved,
+    c.label categorie_label,
+    u.first_name,
+    u.last_name,
+    u.email,
+    u.bio,
+    u.username,
+    u.password,
+    u.profile_image_url,
+    u.created_on,
+    u.active
+FROM Posts p
+JOIN Categories c
+    ON c.id = p.category_id
+JOIN Users u
+    ON u.id = p.user_id

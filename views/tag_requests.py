@@ -73,3 +73,4 @@ def delete_tag(id):
         DELETE FROM Tags
         WHERE id = ?
         """, (id, ))
+

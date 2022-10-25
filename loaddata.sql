@@ -293,3 +293,12 @@ JOIN Users u
 
         SELECT * FROM Users
         ORDER BY username ASC
+
+        SELECT
+            g.id,
+            g.post_id,
+            g.tag_id,
+            t.label
+        FROM PostTags g
+        JOIN Tags t
+            ON t.id = g.tag_id

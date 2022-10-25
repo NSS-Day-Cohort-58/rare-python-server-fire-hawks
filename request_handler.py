@@ -186,7 +186,7 @@ class HandleRequests(BaseHTTPRequestHandler):
             response = create_category(post_body)
         if resource == 'comments':
             response = create_comment(post_body)
-        if resource == 'tag':
+        if resource == 'tags':
             response = create_tag(post_body)
         if resource == 'users':
             response = create_user(post_body)

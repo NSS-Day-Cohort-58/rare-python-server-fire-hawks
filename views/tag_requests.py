@@ -13,10 +13,8 @@ def get_all_tags():
 
         # Write the SQL query to get the information you want
         db_cursor.execute("""
-        SELECT
-            t.id,
-            t.label
-        FROM Tags t
+        SELECT * FROM Tags
+        ORDER BY label ASC
         """)
 
         tags = []

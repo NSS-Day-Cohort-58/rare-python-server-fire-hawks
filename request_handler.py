@@ -3,8 +3,7 @@ import json
 from views.category_requests import get_all_categorys, get_single_category, create_category, delete_category
 from views.comments_requests import create_comment, get_all_comments, get_single_comment, delete_comment
 from views.post_reactions_requests import get_all_post_reactions, get_single_post_reaction, create_post_reaction, delete_post_reaction
-from views.post_requests import create_post, delete_post, get_all_posts, get_single_post
-from views.post_requests import delete_post, get_all_posts, get_single_post
+from views.post_requests import create_post, delete_post, get_all_posts, get_single_post, update_post
 from views.post_tags_requests import create_post_tag, get_all_post_tags, get_single_post_tag, delete_post_tag
 from views.reaction_requests import create_reaction, get_all_reactions, get_single_reaction, delete_reaction
 from views.subscribe_requests import create_subscription, get_all_subscriptions, get_single_subscription, delete_subscription
@@ -204,8 +203,25 @@ class HandleRequests(BaseHTTPRequestHandler):
         self.wfile.write(response.encode())
 
     def do_PUT(self):
-        """Handles PUT requests to the server"""
-        pass
+        content_len = int(self.headers.get('content-length', 0))
+        post_body = self.rfile.read(content_len)
+        post_body = json.loads(post_body)
+
+        # Parse the URL
+        (resource, id) = self.parse_url(self.path)
+
+        success = False
+
+        if resource == "posts":
+            success = update_post(id, post_body)
+        # rest of the elif's
+
+        if success:
+            self._set_headers(204)
+        else:
+            self._set_headers(404)
+
+        self.wfile.write("".encode())
 
     def do_DELETE(self):
         self._set_headers(204)

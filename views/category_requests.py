@@ -13,10 +13,8 @@ def get_all_categorys():
 
         # Write the SQL query to get the information you want
         db_cursor.execute("""
-        SELECT
-            c.id,
-            c.label
-        FROM Categories c
+        SELECT * FROM Categories
+        ORDER BY label ASC
         """)
 
 

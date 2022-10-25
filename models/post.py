@@ -13,3 +13,4 @@ class Post():
         self.content = content
         self.approved = approved
         self.category = None
+        self.user = None

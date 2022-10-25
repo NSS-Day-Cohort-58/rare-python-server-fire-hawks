@@ -66,3 +66,12 @@ def create_tag(new_tag):
 
         new_tag['id'] = id
     return json.dumps(new_tag)
+
+def delete_tag(id):
+    with sqlite3.connect("./db.sqlite3") as conn:
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        DELETE FROM Tags
+        WHERE id = ?
+        """, (id, ))

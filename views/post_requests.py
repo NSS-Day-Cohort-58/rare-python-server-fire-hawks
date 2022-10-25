@@ -2,6 +2,7 @@ import sqlite3
 import json
 from models import Category
 from models.post import Post
+from models.users import Users
 
 
 def get_all_posts():
@@ -23,10 +24,21 @@ def get_all_posts():
             p.image_url,
             p.content,
             p.approved,
-            c.label categorie_label
+            c.label categorie_label,
+            u.first_name,
+            u.last_name,
+            u.email,
+            u.bio,
+            u.username,
+            u.password,
+            u.profile_image_url,
+            u.created_on,
+            u.active
         FROM Posts p
         JOIN Categories c
             ON c.id = p.category_id
+        JOIN Users u
+            ON u.id = p.user_id
        
         """)
 
@@ -42,10 +54,14 @@ def get_all_posts():
         # Create an animal instance from the current row
         post = Post(row['id'], row['user_id'], row['category_id'], row['title'],
                     row['publication_date'], row['image_url'], row['content'], row['approved'])
+        user = Users(row["id"], row["first_name"], row["last_name"], row["username"], row["email"],
+                     row["password"], row["bio"], row["profile_image_url"], row["created_on"], row["active"])
+
         category = Category(row['id'], row['categorie_label'])
 
         # Add the dictionary representation of the location to the animal
         post.category = category.__dict__
+        post.user = user.__dict__
 
         posts.append(post.__dict__)
 
@@ -68,8 +84,22 @@ def get_single_post(id):
             p.publication_date,
             p.image_url,
             p.content,
-            p.approved
+            p.approved,
+            c.label categorie_label,
+            u.first_name,
+            u.last_name,
+            u.email,
+            u.bio,
+            u.username,
+            u.password,
+            u.profile_image_url,
+            u.created_on,
+            u.active
         FROM Posts p
+        JOIN Categories c
+            ON c.id = p.category_id
+        JOIN Users u
+            ON u.id = p.user_id
         WHERE p.id = ?
         """, (id, ))
 
@@ -79,8 +109,15 @@ def get_single_post(id):
         # Create an animal instance from the current row
         post = Post(data['id'], data['user_id'], data['category_id'], data['title'],
                     data['publication_date'], data['image_url'], data['content'], data['approved'])
+        user = Users(data["id"], data["first_name"], data["last_name"], data["username"], data["email"],
+                     data["password"], data["bio"], data["profile_image_url"], data["created_on"], data["active"])
 
+        category = Category(data['id'], data['categorie_label'])
+
+        post.category = category.__dict__
+        post.user = user.__dict__
         return json.dumps(post.__dict__)
+
 
 def delete_post(id):
     with sqlite3.connect("./db.sqlite3") as conn:
@@ -90,6 +127,7 @@ def delete_post(id):
         DELETE FROM Posts
         WHERE id = ?
         """, (id, ))
+
 
 def create_post(new_post):
     with sqlite3.connect("./db.sqlite3") as conn:

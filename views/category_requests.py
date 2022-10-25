@@ -65,7 +65,7 @@ def create_category(new_category):
         id = db_cursor.lastrowid
 
         new_category['id'] = id
-    return new_category
+    return json.dumps(new_category)
 
 def delete_category(id):
     with sqlite3.connect("./db.sqlite3") as conn:

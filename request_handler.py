@@ -1,17 +1,15 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 from views.category_requests import get_all_categorys, get_single_category, create_category, delete_category
-
 from views.comments_requests import create_comment, get_all_comments, get_single_comment, delete_comment
-from views.post_requests import create_post, delete_post, get_all_posts, get_single_post
 from views.post_reactions_requests import get_all_post_reactions, get_single_post_reaction, create_post_reaction, delete_post_reaction
+from views.post_requests import create_post, delete_post, get_all_posts, get_single_post
 from views.post_requests import delete_post, get_all_posts, get_single_post
 from views.post_tags_requests import create_post_tag, get_all_post_tags, get_single_post_tag, delete_post_tag
 from views.reaction_requests import create_reaction, get_all_reactions, get_single_reaction, delete_reaction
-from views.tag_requests import create_tag, get_all_tags, get_single_tag, delete_tag
-from views.post_tags_requests import get_all_post_tags, get_single_post_tag, create_post_tag, delete_post_tag
-from views.user_requests import create_user, delete_user, get_all_users, get_single_user, login_user
 from views.subscribe_requests import create_subscription, get_all_subscriptions, get_single_subscription, delete_subscription
+from views.tag_requests import create_tag, get_all_tags, get_single_tag, delete_tag
+from views.user_requests import create_user, delete_user, get_all_users, get_single_user, login_user
 
 method_mapper = {
     "posts": {

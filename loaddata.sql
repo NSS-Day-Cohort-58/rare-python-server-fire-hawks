@@ -214,6 +214,15 @@ FROM Posts p
 JOIN Categories c
     ON c.id = p.category_id
 
+SELECT * FROM Tags
+ORDER BY label ASC
+
+
+SELECT
+  t.id,
+  t.label
+FROM Tags t
+
 
 
 

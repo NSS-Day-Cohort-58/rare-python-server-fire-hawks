@@ -14,18 +14,8 @@ def get_all_users():
         # Write the SQL query to get the information you want
         db_cursor.execute(
             """
-        SELECT
-            u.id,
-            u.first_name,
-            u.last_name,
-            u.username,
-            u.email,
-            u.password,
-            u.bio,
-            u.profile_image_url,
-            u.created_on,
-            u.active
-        FROM Users u
+        SELECT * FROM Users
+        ORDER BY username ASC
         """
         )
         users = []

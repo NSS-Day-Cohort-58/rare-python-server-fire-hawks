@@ -145,3 +145,30 @@ def create_post(new_post):
         new_post['id'] = id
 
     return json.dumps(new_post)
+
+
+
+def update_post(id, new_post):
+    with sqlite3.connect("./db.sqlite3") as conn:
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        UPDATE Posts
+            SET
+                category_id = ?,
+                title = ?,
+                image_url = ?,
+                content = ?
+        WHERE id = ?
+        """, (new_post['category_id'], new_post['title'], new_post['image_url'], new_post['content'], id, ))
+
+        # Were any rows affected?
+        # Did the client send an `id` that exists?
+        rows_affected = db_cursor.rowcount
+
+    if rows_affected == 0:
+        # Forces 404 response by main module
+        return False
+    else:
+        # Forces 204 response by main module
+        return True

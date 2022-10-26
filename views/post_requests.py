@@ -5,6 +5,7 @@ from models.post import Post
 from models.users import Users
 
 
+
 def get_all_posts():
     # Open a connection to the database
     with sqlite3.connect("./db.sqlite3") as conn:

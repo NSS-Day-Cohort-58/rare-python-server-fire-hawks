@@ -1,6 +1,8 @@
+from cProfile import label
 import sqlite3
 import json
 from models import PostTags
+from models import Tag
 
 
 def get_all_post_tags():
@@ -16,8 +18,11 @@ def get_all_post_tags():
         SELECT
             g.id,
             g.post_id,
-            g.tag_id
+            g.tag_id,
+            t.label
         FROM PostTags g
+        JOIN Tags t
+            ON t.id = g.tag_id
         """)
 
         post_tags = []
@@ -27,6 +32,10 @@ def get_all_post_tags():
         for row in dataset:
 
             post_tag = PostTags(row['id'], row['post_id'], row['tag_id'])
+
+            tag = Tag(row['id'], row['label'])
+
+            post_tag.tag = tag.__dict__
 
             post_tags.append(post_tag.__dict__)
 

@@ -1,7 +1,8 @@
+from cmd import IDENTCHARS
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 from views.category_requests import get_all_categorys, get_single_category, create_category, delete_category
-from views.comments_requests import create_comment, get_all_comments, get_single_comment, delete_comment
+from views.comments_requests import create_comment, get_all_comments, get_single_comment, delete_comment, get_comments_by_post_Id
 from views.post_reactions_requests import get_all_post_reactions, get_single_post_reaction, create_post_reaction, delete_post_reaction
 from views.post_requests import create_post, delete_post, get_all_posts, get_single_post, update_post
 from views.post_tags_requests import create_post_tag, get_all_post_tags, get_single_post_tag, delete_post_tag
@@ -9,6 +10,7 @@ from views.reaction_requests import create_reaction, get_all_reactions, get_sing
 from views.subscribe_requests import create_subscription, get_all_subscriptions, get_single_subscription, delete_subscription
 from views.tag_requests import create_tag, get_all_tags, get_single_tag, delete_tag
 from views.user_requests import create_user, delete_user, get_all_users, get_single_user, login_user
+from urllib.parse import urlparse, parse_qs
 
 method_mapper = {
     "posts": {
@@ -164,7 +166,11 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = get_single_subscription(id)
                 else:
                     response = get_all_subscriptions()
-
+        else: # There is a ? in the path, run the query param functions
+            (resource, query, id) = parsed
+            
+            if query == 'post_id' and resource == 'comments':
+                response = get_comments_by_post_Id(id)
             
 
         self.wfile.write(response.encode())

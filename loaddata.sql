@@ -302,3 +302,19 @@ JOIN Users u
         FROM PostTags g
         JOIN Tags t
             ON t.id = g.tag_id
+
+        SELECT
+            x.id,
+            x.post_id,
+            x.author_id,
+            x.content
+        FROM Comments x
+        WHERE x.post_id = 1
+
+
+INSERT INTO Subscriptions VALUES (Null, 3, 1, CURRENT_TIMESTAMP);
+INSERT INTO Subscriptions VALUES (Null, 3, 4, CURRENT_TIMESTAMP);
+INSERT INTO Subscriptions VALUES (Null, 4, 2, CURRENT_TIMESTAMP);
+INSERT INTO Subscriptions VALUES (Null, 4, 3, CURRENT_TIMESTAMP);
+INSERT INTO Subscriptions VALUES (Null, 4, 1, CURRENT_TIMESTAMP);
+INSERT INTO Subscriptions VALUES (Null, 3, 2, CURRENT_TIMESTAMP);
